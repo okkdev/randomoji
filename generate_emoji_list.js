@@ -1,3 +1,4 @@
+const { Console } = require("console")
 const fs = require("fs")
 const https = require("https")
 
@@ -12,19 +13,21 @@ https
       })
 
       res.on("end", () => {
-        const emojis = JSON.parse(body).map((x) =>
+        let emojis = JSON.parse(body).map((x) =>
           ["❌", "🔤", "🧲"].includes(x.character)
             ? `🔤❌${x.character}🔤`
             : `🔤${x.character}🔤`
         )
+        emojis = [...new Set(emojis)]
         const file = `🐇 😂 🍇
-        🆕 🍇🍉
-         ❗️ 👨‍👩‍👧‍👦 ➡️ 🍿 🍇
-          ↩️ 🍿 ${emojis.join(" ")} 🍆 
-         🍉 
-        🍉`
+  🥯 🆕🍇🍉
 
-        fs.writeFile("src/emojis.🍇", file, function (err) {
+  🥯 ❓ 👨‍👩‍👧‍👦 ➡️ 🍨🐚🔡🍆🍇
+    ↩️ 🍿 ${emojis.join(" ")} 🍆 
+  🍉 
+🍉`
+
+        fs.writeFile("src/😂.🍇", file, function (err) {
           if (err) return console.log(err)
           console.log("Emoji List Generated")
         })
