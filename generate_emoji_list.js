@@ -1,25 +1,16 @@
-const { Console } = require("console")
-const fs = require("fs")
-const https = require("https")
+const res = await fetch(
+  `https://emoji-api.com/emojis?access_key=${Deno.env.get("EMOJI_API_KEY")}`
+)
+const body = await res.json()
 
-https
-  .get(
-    `https://emoji-api.com/emojis?access_key=${process.env.EMOJI_API_KEY}`,
-    (res) => {
-      let body = ""
+let emojis = body.map((x) =>
+  ["❌", "🔤", "🧲"].includes(x.character)
+    ? `🔤❌${x.character}🔤`
+    : `🔤${x.character}🔤`
+)
+emojis = [...new Set(emojis)]
 
-      res.on("data", (chunk) => {
-        body += chunk
-      })
-
-      res.on("end", () => {
-        let emojis = JSON.parse(body).map((x) =>
-          ["❌", "🔤", "🧲"].includes(x.character)
-            ? `🔤❌${x.character}🔤`
-            : `🔤${x.character}🔤`
-        )
-        emojis = [...new Set(emojis)]
-        const file = `🐇 😂 🍇
+const file = `🐇 😂 🍇
   🥯 🆕🍇🍉
 
   🥯 ❓ 👨‍👩‍👧‍👦 ➡️ 🍨🐚🔡🍆🍇
@@ -27,13 +18,9 @@ https
   🍉 
 🍉`
 
-        fs.writeFile("src/😂.🍇", file, function (err) {
-          if (err) return console.log(err)
-          console.log("Emoji List Generated")
-        })
-      })
-    }
-  )
-  .on("error", (e) => {
-    console.error(e)
-  })
+try {
+  await Deno.writeTextFile("src/😂.🍇", file)
+  console.log("Emoji List Generated")
+} catch (err) {
+  console.error(err)
+}

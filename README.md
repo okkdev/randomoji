@@ -7,9 +7,9 @@ Written in Emojicode.
 
 Create [Open Emoji API](https://emoji-api.com/) key and set it as env var `EMOJI_API_KEY`.
 
-Run the JS script:
+Run the Deno script:
 ```
-$ node generate_emoji_list.js
+$ deno run --allow-env --allow-net --allow-write generate_emoji_list.js
 ```
 
 ## Build
